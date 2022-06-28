@@ -390,28 +390,28 @@ def generate_enemy_ships():
             len = ships_list[i]
             horizont_vertikal = random.randrange(1, 3)  # 1- горизонтальное 2 - вертикальное
 
-            primerno_x = random.randrange(0, s_x)
-            if primerno_x + len > s_x:
-                primerno_x = primerno_x - len
+            approx_x = random.randrange(0, s_x)
+            if approx_x + len > s_x:
+                approx_x = approx_x - len
 
-            primerno_y = random.randrange(0, s_y)
-            if primerno_y + len > s_y:
-                primerno_y = primerno_y - len
+            approx_y = random.randrange(0, s_y)
+            if approx_y + len > s_y:
+                approx_y = approx_y - len
 
             if horizont_vertikal == 1:
-                if primerno_x + len <= s_x:
+                if approx_x + len <= s_x:
                     for j in range(0, len):
                         try:
                             check_near_ships = 0
-                            check_near_ships = enemy_ships[primerno_y][primerno_x - 1] + \
-                                               enemy_ships[primerno_y][primerno_x + j] + \
-                                               enemy_ships[primerno_y][primerno_x + j + 1] + \
-                                               enemy_ships[primerno_y + 1][primerno_x + j + 1] + \
-                                               enemy_ships[primerno_y - 1][primerno_x + j + 1] + \
-                                               enemy_ships[primerno_y + 1][primerno_x + j] + \
-                                               enemy_ships[primerno_y - 1][primerno_x + j]
+                            check_near_ships = enemy_ships[approx_y][approx_x - 1] + \
+                                               enemy_ships[approx_y][approx_x + j] + \
+                                               enemy_ships[approx_y][approx_x + j + 1] + \
+                                               enemy_ships[approx_y + 1][approx_x + j + 1] + \
+                                               enemy_ships[approx_y - 1][approx_x + j + 1] + \
+                                               enemy_ships[approx_y + 1][approx_x + j] + \
+                                               enemy_ships[approx_y - 1][approx_x + j]
                             if check_near_ships == 0:  # записываем в том случае, если нет ничего рядом
-                                enemy_ships[primerno_y][primerno_x + j] = i + 1  # записываем номер корабля
+                                enemy_ships[approx_y][approx_x + j] = i + 1  # записываем номер корабля
                         except Exception:
                             pass
             if horizont_vertikal == 2:
@@ -419,15 +419,15 @@ def generate_enemy_ships():
                     for j in range(0, len):
                         try:
                             check_near_ships = 0
-                            check_near_ships = enemy_ships[primerno_y - 1][primerno_x] + \
-                                               enemy_ships[primerno_y + j][primerno_x] + \
-                                               enemy_ships[primerno_y + j + 1][primerno_x] + \
-                                               enemy_ships[primerno_y + j + 1][primerno_x + 1] + \
-                                               enemy_ships[primerno_y + j + 1][primerno_x - 1] + \
-                                               enemy_ships[primerno_y + j][primerno_x + 1] + \
-                                               enemy_ships[primerno_y + j][primerno_x - 1]
+                            check_near_ships = enemy_ships[approx_y - 1][approx_x] + \
+                                               enemy_ships[approx_y + j][approx_x] + \
+                                               enemy_ships[approx_y + j + 1][approx_x] + \
+                                               enemy_ships[approx_y + j + 1][approx_x + 1] + \
+                                               enemy_ships[approx_y + j + 1][approx_x - 1] + \
+                                               enemy_ships[approx_y + j][approx_x + 1] + \
+                                               enemy_ships[approx_y + j][approx_x - 1]
                             if check_near_ships == 0:  # записываем в том случае, если нет ничего рядом
-                                enemy_ships[primerno_y + j][primerno_x] = i + 1  # записываем номер корабля
+                                enemy_ships[approx_y + j][approx_x] = i + 1  # записываем номер корабля
                         except Exception:
                             pass
 
