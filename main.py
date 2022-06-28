@@ -415,7 +415,7 @@ def generate_enemy_ships():
                         except Exception:
                             pass
             if horizont_vertikal == 2:
-                if primerno_y + len <= s_y:
+                if approx_y + len <= s_y:
                     for j in range(0, len):
                         try:
                             check_near_ships = 0
