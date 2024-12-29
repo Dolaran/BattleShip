@@ -8,46 +8,45 @@ app_running = True
 
 size_canvas_x = 500
 size_canvas_y = 500
-s_x = s_y = 8  # размер игрового поля - не меньше 8 и не больше 18 )))
-step_x = size_canvas_x // s_x  # шаг по горизонтали
-step_y = size_canvas_y // s_y  # шаг по вертикали
+s_x = s_y = 8  # розмір ігрового поля - не менше 8 і не більше 18 )))
+step_x = size_canvas_x // s_x  # крок по горизонталі
+step_y = size_canvas_y // s_y  # крок по вертикалі
 size_canvas_x = step_x * s_x
 size_canvas_y = step_y * s_y
 
-txt_len_middle = "* Human vs Computer"
+txt_len_middle = "* Людина проти Комп'ютера"
 size_font_x = 10
 len_txt_x = len(txt_len_middle)*size_font_x
-print(len_txt_x)
 delta_menu_x = len_txt_x // step_x + 1
 menu_x = step_x * delta_menu_x  # 250
 
 menu_y = 40
-ships = s_x // 2  # определяем максимальное кол-во кораблей
-ship_len1 = s_x // 5  # длина первого типа корабля
-ship_len2 = s_x // 3  # длина второго типа корабля
-ship_len3 = s_x // 2  # длина третьего типа корабля
+ships = s_x // 2  # визначаємо максимальну кількість кораблів
+ship_len1 = s_x // 5  # довжина першого типу корабля
+ship_len2 = s_x // 3  # довжина другого типу корабля
+ship_len3 = s_x // 2  # довжина третього типу корабля
 enemy_ships1 = [[0 for i in range(s_x + 1)] for i in range(s_y + 1)]
 enemy_ships2 = [[0 for i in range(s_x + 1)] for i in range(s_y + 1)]
-list_ids = []  # список объектов canvas
+list_ids = []  # список об'єктів canvas
 
-# points1 - список куда мы кликнули мышкой
+# points1 - список, куди ми клацнули мишею
 points1 = [[-1 for i in range(s_x)] for i in range(s_y)]
 points2 = [[-1 for i in range(s_x)] for i in range(s_y)]
 
-# boom - список попаданий по кораблям противника
+# boom - список влучань по кораблях противника
 boom = [[0 for i in range(s_x)] for i in range(s_y)]
 
-# ships_list - список кораблей игрока 1 и игрока 2
+# ships_list - список кораблів гравця 1 і гравця 2
 ships_list = []
 
-# hod_igrovomu_polu_1 - если Истина - то ходит игрок №2, иначе ходит игрок №1
+# hod_igrovomu_polu_1 - якщо істина - то ходить гравець №2, інакше ходить гравець №1
 hod_igrovomu_polu_1 = False
 
-# computer_vs_human - если Истина - то играем против компьютера
+# computer_vs_human - якщо істина - то граємо проти комп'ютера
 computer_vs_human = False
 if computer_vs_human:
-    add_to_label = " (Компьютер)"
-    add_to_label2 = " (прицеливается)"
+    add_to_label = " (Комп'ютер)"
+    add_to_label2 = " (прицілюється)"
     hod_igrovomu_polu_1 = False
 else:
     add_to_label = ""
@@ -57,13 +56,12 @@ else:
 
 def on_closing():
     global app_running
-    if messagebox.askokcancel("Выход из игры", "Хотите выйти из игры?"):
+    if messagebox.askokcancel("Вихід з гри", "Бажаєте вийти з гри?"):
         app_running = False
         tk.destroy()
 
-
 tk.protocol("WM_DELETE_WINDOW", on_closing)
-tk.title("Игра Морской Бой")
+tk.title("Гра Морський Бій")
 tk.resizable(0, 0)
 tk.wm_attributes("-topmost", 1)
 canvas = Canvas(tk, width=size_canvas_x + menu_x + size_canvas_x, height=size_canvas_y + menu_y, bd=0,
@@ -74,20 +72,18 @@ canvas.create_rectangle(size_canvas_x + menu_x, 0, size_canvas_x + menu_x + size
 canvas.pack()
 tk.update()
 
-
 def draw_table(offset_x=0):
     for i in range(0, s_x + 1):
         canvas.create_line(offset_x + step_x * i, 0, offset_x + step_x * i, size_canvas_y)
     for i in range(0, s_y + 1):
         canvas.create_line(offset_x, step_y * i, offset_x + size_canvas_x, step_y * i)
 
-
 draw_table()
 draw_table(size_canvas_x + menu_x)
 
-t0 = Label(tk, text="Игрок №1", font=("Helvetica", 16))
+t0 = Label(tk, text="Гравець №1", font=("Helvetica", 16))
 t0.place(x=size_canvas_x // 2 - t0.winfo_reqwidth() // 2, y=size_canvas_y + 3)
-t1 = Label(tk, text="Игрок №2"+add_to_label, font=("Helvetica", 16))
+t1 = Label(tk, text="Гравець №2"+add_to_label, font=("Helvetica", 16))
 t1.place(x=size_canvas_x + menu_x + size_canvas_x // 2 - t1.winfo_reqwidth() // 2, y=size_canvas_y + 3)
 
 t0.configure(bg="red")
@@ -96,49 +92,45 @@ t0.configure(bg="#f0f0f0")
 t3 = Label(tk, text="@@@@@@@", font=("Helvetica", 16))
 t3.place(x=size_canvas_x + menu_x//2 - t3.winfo_reqwidth() // 2, y= size_canvas_y)
 
-
 def change_rb():
     global computer_vs_human, add_to_label, add_to_label2
-    print(rb_var.get())
     if rb_var.get():
         computer_vs_human = True
-        add_to_label = " (Компьютер)"
-        add_to_label2 = " (прицеливается)"
+        add_to_label = " (Комп'ютер)"
+        add_to_label2 = " (прицілюється)"
     else:
         computer_vs_human = False
         add_to_label = ""
         add_to_label2 = ""
 
 rb_var = BooleanVar()
-rb1 = Radiobutton(tk, text="Human vs Computer", variable=rb_var, value=1, command=change_rb)
-rb2 = Radiobutton(tk, text="Human vs Human", variable=rb_var, value=0, command=change_rb)
+rb1 = Radiobutton(tk, text="Людина проти Комп'ютера", variable=rb_var, value=1, command=change_rb)
+rb2 = Radiobutton(tk, text="Людина проти Людини", variable=rb_var, value=0, command=change_rb)
 rb1.place(x=size_canvas_x + menu_x // 2 - rb1.winfo_reqwidth() // 2, y=140)
 rb2.place(x=size_canvas_x + menu_x // 2 - rb2.winfo_reqwidth() // 2, y=160)
 if computer_vs_human:
     rb1.select()
 
-
 def mark_igrok(igrok_mark_1):
     if igrok_mark_1:
         t0.configure(bg="red")
-        t0.configure(text="Игрок №1"+add_to_label2)
+        t0.configure(text="Гравець №1"+add_to_label2)
         t0.place(x=size_canvas_x // 2 - t0.winfo_reqwidth() // 2, y=size_canvas_y + 3)
-        t1.configure(text="Игрок №2" + add_to_label)
+        t1.configure(text="Гравець №2" + add_to_label)
         t1.place(x=size_canvas_x + menu_x + size_canvas_x // 2 - t1.winfo_reqwidth() // 2, y=size_canvas_y + 3)
         t1.configure(bg="#f0f0f0")
-        t3.configure(text="Ход Игрока №2"+add_to_label)
+        t3.configure(text="Хід Гравця №2"+add_to_label)
         t3.place(x=size_canvas_x + menu_x // 2 - t3.winfo_reqwidth() // 2, y=size_canvas_y)
     else:
         t1.configure(bg="red")
         t0.configure(bg="#f0f0f0")
-        t0.configure(text="Игрок №1")
+        t0.configure(text="Гравець №1")
         t0.place(x=size_canvas_x // 2 - t0.winfo_reqwidth() // 2, y=size_canvas_y + 3)
-        t1.configure(text="Игрок №2" + add_to_label)
+        t1.configure(text="Гравець №2" + add_to_label)
         t1.place(x=size_canvas_x + menu_x + size_canvas_x // 2 - t1.winfo_reqwidth() // 2, y=size_canvas_y + 3)
-        t3.configure(text="Ход Игрока №1")
+        t3.configure(text="Хід Гравця №1")
         t3.place(x=size_canvas_x + menu_x // 2 - t3.winfo_reqwidth() // 2, y=size_canvas_y)
 mark_igrok(hod_igrovomu_polu_1)
-
 
 def button_show_enemy1():
     for i in range(0, s_x):
@@ -181,13 +173,13 @@ def button_begin_again():
     boom = [[0 for i in range(s_x)] for i in range(s_y)]
 
 
-b0 = Button(tk, text="Показать корабли \n Игрока №1", command=button_show_enemy1)
+b0 = Button(tk, text="Показати кораблі \n Гравця №1", command=button_show_enemy1)
 b0.place(x=size_canvas_x + menu_x // 2 - b0.winfo_reqwidth() // 2, y=10)
 
-b1 = Button(tk, text="Показать корабли \n Игрока №2", command=button_show_enemy2)
+b1 = Button(tk, text="Показати кораблі \n Гравця №2", command=button_show_enemy2)
 b1.place(x=size_canvas_x + menu_x // 2 - b1.winfo_reqwidth() // 2, y=60)
 
-b2 = Button(tk, text="Начать заново!", command=button_begin_again)
+b2 = Button(tk, text="Розпочати заново!", command=button_begin_again)
 b2.place(x=size_canvas_x + menu_x // 2 - b2.winfo_reqwidth() // 2, y=110)
 
 
@@ -275,8 +267,8 @@ def hod_computer():
     points1[ip_y][ip_x] = 7
     draw_point(ip_x, ip_y)
     if check_winner2():
-        winner = "Победа Игрока №2"+add_to_label
-        winner_add = "(Все корабли противника Игрока №1 подбиты)!!!!!"
+        winner = "Перемога Гравця №2" + add_to_label
+        winner_add = "(Усі кораблі противника Гравця №1 знищені)!!!!!"
         print(winner, winner_add)
         points1 = [[10 for i in range(s_x)] for i in range(s_y)]
         points2 = [[10 for i in range(s_x)] for i in range(s_y)]
@@ -292,7 +284,6 @@ def hod_computer():
         list_ids.append(id3)
         list_ids.append(id4)
 
-
 def add_to_all(event):
     global points1, points2, hod_igrovomu_polu_1
     _type = 0  # ЛКМ
@@ -303,7 +294,7 @@ def add_to_all(event):
     ip_x = mouse_x // step_x
     ip_y = mouse_y // step_y
 
-    # первое игровое поле
+    # перше ігрове поле
     if ip_x < s_x and ip_y < s_y and hod_igrovomu_polu_1:
         if points1[ip_y][ip_x] == -1:
             points1[ip_y][ip_x] = _type
@@ -311,8 +302,8 @@ def add_to_all(event):
             draw_point(ip_x, ip_y)
             if check_winner2():
                 hod_igrovomu_polu_1 = True
-                winner = "Победа Игрока №2"
-                winner_add = "(Все корабли противника Игрока №1 подбиты)!!!!!"
+                winner = "Перемога Гравця №2"
+                winner_add = "(Усі кораблі противника Гравця №1 знищені)!!!!!"
                 print(winner, winner_add)
                 points1 = [[10 for i in range(s_x)] for i in range(s_y)]
                 points2 = [[10 for i in range(s_x)] for i in range(s_y)]
@@ -327,7 +318,7 @@ def add_to_all(event):
                 list_ids.append(id3)
                 list_ids.append(id4)
 
-    # второе игровое поле
+    # друге ігрове поле
     if ip_x >= s_x + delta_menu_x and ip_x <= s_x + s_x + delta_menu_x and ip_y < s_y and not hod_igrovomu_polu_1:
         if points2[ip_y][ip_x - s_x - delta_menu_x] == -1:
             points2[ip_y][ip_x - s_x - delta_menu_x] = _type
@@ -335,8 +326,8 @@ def add_to_all(event):
             draw_point2(ip_x - s_x - delta_menu_x, ip_y)
             if check_winner2_igrok_2():
                 hod_igrovomu_polu_1 = False
-                winner = "Победа Игрока №1"
-                winner_add = "(Все корабли противника Игрока №2 подбиты)!!!!!"
+                winner = "Перемога Гравця №1"
+                winner_add = "(Усі кораблі противника Гравця №2 знищені)!!!!!"
                 print(winner, winner_add)
                 points1 = [[10 for i in range(s_x)] for i in range(s_y)]
                 points2 = [[10 for i in range(s_x)] for i in range(s_y)]
@@ -368,7 +359,7 @@ canvas.bind_all("<Button-3>", add_to_all)  # ПКМ
 def generate_ships_list():
     global ships_list
     ships_list = []
-    # генерируем список случайных длин кораблей
+    # генеруємо список випадкових довжин кораблів
     for i in range(0, ships):
         ships_list.append(random.choice([ship_len1, ship_len2, ship_len3]))
 
@@ -377,18 +368,18 @@ def generate_enemy_ships():
     global ships_list
     enemy_ships = []
 
-    # подсчет суммарной длины кораблей
+    # підрахунок суммарної довжини кораблів
     sum_1_all_ships = sum(ships_list)
     sum_1_enemy = 0
 
     while sum_1_enemy != sum_1_all_ships:
-        # обнуляем массив кораблей врага
+        # обнулення массиву кораблів ворога
         enemy_ships = [[0 for i in range(s_x + 1)] for i in
-                       range(s_y + 1)]  # +1 для доп. линии справа и снизу, для успешных проверок генерации противника
+                       range(s_y + 1)]  # +1 для дод. лінії справа і знизу, для успішних перевірок генерації супротивника
 
         for i in range(0, ships):
             len = ships_list[i]
-            horizont_vertikal = random.randrange(1, 3)  # 1- горизонтальное 2 - вертикальное
+            horizont_vertikal = random.randrange(1, 3)  # 1- горизонтальне 2 - вертикальне
 
             approx_x = random.randrange(0, s_x)
             if approx_x + len > s_x:
@@ -410,8 +401,8 @@ def generate_enemy_ships():
                                                enemy_ships[approx_y - 1][approx_x + j + 1] + \
                                                enemy_ships[approx_y + 1][approx_x + j] + \
                                                enemy_ships[approx_y - 1][approx_x + j]
-                            if check_near_ships == 0:  # записываем в том случае, если нет ничего рядом
-                                enemy_ships[approx_y][approx_x + j] = i + 1  # записываем номер корабля
+                            if check_near_ships == 0:  # записуємо в том випадку, якщо нічого немає поряд
+                                enemy_ships[approx_y][approx_x + j] = i + 1  # записуємо номер корабля
                         except Exception:
                             pass
             if horizont_vertikal == 2:
@@ -426,12 +417,12 @@ def generate_enemy_ships():
                                                enemy_ships[approx_y + j + 1][approx_x - 1] + \
                                                enemy_ships[approx_y + j][approx_x + 1] + \
                                                enemy_ships[approx_y + j][approx_x - 1]
-                            if check_near_ships == 0:  # записываем в том случае, если нет ничего рядом
-                                enemy_ships[approx_y + j][approx_x] = i + 1  # записываем номер корабля
+                            if check_near_ships == 0:   # записуємо в том випадку, якщо нічого немає поряд
+                                enemy_ships[approx_y + j][approx_x] = i + 1  # записуємо номер корабля
                         except Exception:
                             pass
 
-        # делаем подсчет 1ц
+        # робим обрахування 1ц
         sum_1_enemy = 0
         for i in range(0, s_x):
             for j in range(0, s_y):
